@@ -1,12 +1,13 @@
 import Hero from "./components/Hero";
+import ProfileDetails from "./components/ProfileDetails";
 import { useProfileDetails } from "./contexts/ProfileDetails/useProfileDetails";
 
 function App() {
-  const { showDetails } = useProfileDetails();
+  const { activeProfile } = useProfileDetails();
   return (
-    <div className="bg-[#20293A] min-h-screen">
+    <div className="bg-[#20293A] min-h-screen text-[#CDD5E0]">
       <Hero />
-      {showDetails && <div>Profile Details</div>}
+      {activeProfile && <ProfileDetails />}
     </div>
   );
 }

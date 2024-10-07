@@ -45,7 +45,10 @@ function Trigger({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const { setQuery, debouncedQuery } = useSearchQuery();
-  const { isLoading } = useProfile(debouncedQuery, () => setIsOpen(true));
+  const { isLoading } = useProfile(debouncedQuery, {
+    onSuccess: () => setIsOpen(true),
+    onError: () => setIsOpen(true),
+  });
   useRepos(debouncedQuery);
 
   const { cache } = useSWRConfig();
@@ -57,9 +60,6 @@ function Trigger({
     <Popover.Trigger asChild>
       <SearchInput
         isLoading={isLoading}
-        onFocus={(e) => {
-          setIsOpen(existsInCache(e.target.value));
-        }}
         onChange={(e) => {
           setQuery(e.target.value);
           if (!e.target.value) setIsOpen(false);
@@ -96,7 +96,7 @@ function Content({
       >
         {error && (
           <div className="text-center text-sm py-1 font-medium text-red-500">
-            Failed fetching profile data
+            {error.message}
           </div>
         )}
         {data && (
